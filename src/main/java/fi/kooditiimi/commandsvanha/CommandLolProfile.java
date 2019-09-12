@@ -1,4 +1,4 @@
-package fi.kooditiimi.commands;
+package fi.kooditiimi.commandsvanha;
 
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Queue;
