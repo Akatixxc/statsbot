@@ -1,6 +1,5 @@
 package fi.kooditiimi.commandsvanha;
 
-import com.merakianalytics.orianna.types.common.Region;
 import fi.kooditiimi.App;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;

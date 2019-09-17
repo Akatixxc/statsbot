@@ -38,11 +38,6 @@
       <version>5.5.2</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.merakianalytics.orianna</groupId>
-      <artifactId>orianna</artifactId>
-      <version>3.0.4</version>
-    </dependency>
       <dependency>
           <groupId>org.json</groupId>
           <artifactId>json</artifactId>

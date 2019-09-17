@@ -30,13 +30,14 @@ public class LeagueAPI {
 
         HttpResponse<String> summonerLeagueBySummonerIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId);
         JSONArray summonerLeagueArray = new JSONArray(summonerLeagueBySummonerIdRequest.body());
+
         if (!summonerLeagueArray.isEmpty()) {
             for (int i = 0; i < summonerLeagueArray.length(); i++) {
-                JSONObject summonerLeague = new JSONObject(summonerLeagueArray.getJSONObject(i));
+                JSONObject summonerLeague = summonerLeagueArray.getJSONObject(i);
                 if (summonerLeague.getString("queueType").equals("RANKED_SOLO_5x5")) {
-                    summonerRank = summonerLeague.getString("tier") +
-                            summonerLeague.getString("rank") +
-                            summonerLeague.getInt("leaguePoints");
+                    summonerRank = summonerLeague.getString("tier") + " " +
+                            summonerLeague.getString("rank") + " " +
+                            summonerLeague.getInt("leaguePoints") + " LP";
                     summonerRankedWins = summonerLeague.getInt("wins");
                     summonerRankedLosses = summonerLeague.getInt("losses");
                     break;
