@@ -45,7 +45,7 @@ public class HandleLeagueReguest {
     private void printProfile(GuildMessageReceivedEvent event, String name, String server) {
         LeagueAPI api = new LeagueAPI();
         LeagueProfile profile = api.getProfile(name, server);
-
+        System.out.println("Summoner: " + profile.getSummonerName() + " " + profile.getSummonerRank());
     }
 
 }
