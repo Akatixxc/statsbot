@@ -23,7 +23,7 @@ public class App {
 
             jda = new JDABuilder("NjE4MTIyODA5ODI2MjE0MDIx.XW1nDw.U-GtQFn5Jp6lfkm204fKQkX1p3g").build();
             jda.getPresence().setStatus(OnlineStatus.ONLINE);
-            jda.getPresence().setActivity(Activity.watching("Chat"));
+            jda.getPresence().setActivity(Activity.watching("Brooklyn99"));
 
             jda.addEventListener(new Commands());
 
