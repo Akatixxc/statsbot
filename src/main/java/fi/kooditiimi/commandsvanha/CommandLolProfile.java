@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class CommandLolProfile {
     public static void commandStats(GuildMessageReceivedEvent event, String name) {
-        EmbedBuilder embed = new EmbedBuilder();
+/*        EmbedBuilder embed = new EmbedBuilder();
 
         System.out.println(Orianna.summonerNamed(name).withRegion(App.region).get().getLeaguePosition(Queue.RANKED_SOLO_5x5).getTier());
 
@@ -40,6 +40,6 @@ public class CommandLolProfile {
         //System.out.println(Orianna.summonerNamed(name).withRegion(Region.EUROPE_NORTH_EAST).get().getChampionMasteries().get(0).getChampion().getName());
         embed.setColor(Color.RED);
         event.getChannel().sendMessage(embed.build()).queue();
-        embed.clear();
+        embed.clear();*/
     }
 }

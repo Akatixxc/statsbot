@@ -10,7 +10,7 @@ import java.awt.*;
 public class CommandLolRegion {
 
     public static void commandLolRegion(GuildMessageReceivedEvent event, String arg2) {
-        switch (arg2) {
+/*        switch (arg2) {
             case "br":
                 App.setRegion(Region.BRAZIL);
                 regionSetTo(event);
@@ -62,11 +62,11 @@ public class CommandLolRegion {
                 embed.setColor(Color.RED);
                 event.getChannel().sendMessage(embed.build()).queue();
                 embed.clear();
-        }
+        }*/
     }
 
-    public static void regionSetTo(GuildMessageReceivedEvent event) {
+/*    public static void regionSetTo(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage("Region set to: " + App.getRegion()).queue();
-    }
+    }*/
 
 }

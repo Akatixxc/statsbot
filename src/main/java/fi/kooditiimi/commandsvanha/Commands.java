@@ -7,28 +7,28 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class Commands extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){
+
         String[] args = event.getMessage().getContentRaw().split("\\s+");
 
-        for(String s : args) {
+        String prefixAndFirstArgument = args[0].toLowerCase();
+        String firstArgument = prefixAndFirstArgument.split(App.PREFIX)[1];
 
+        if(prefixAndFirstArgument.substring(0,App.PREFIX.length()).equals(App.PREFIX)) {
+            return;
         }
 
-        String prefixAndCommandOrGame = args[0].toLowerCase();
-        String region = args[1].toLowerCase();
-        String player = args[2].toLowerCase();
-
-
-
-
-        if (prefixAndCommandOrGame.equals(App.PREFIX + "help")) {
-            CommandHelp.commandHelp(event);
-        }
-        if (prefixAndCommandOrGame.equals(App.PREFIX + "info")) {
-            CommandInfo.commandInfo(event);
+        switch (firstArgument) {
+            case "help":
+                CommandHelp.commandHelp(event);
+            case "info":
+                CommandInfo.commandInfo(event);
+            case "lol":
+                //TODO: lol luokka
+            default:
+                printCommandNotFoundMessage(event, firstArgument);
         }
 
-
-
+/*
         if(prefixAndCommandOrGame.equals(App.PREFIX + "lol")) {
 
             if (region.equals("profile")) {
@@ -42,6 +42,11 @@ public class Commands extends ListenerAdapter {
                 CommandLolRegion.commandLolRegion(event, player.toLowerCase());
             }
         }
+        */
+    }
+
+    private void printCommandNotFoundMessage(GuildMessageReceivedEvent event, String command) {
+        event.getChannel().sendMessage("Command: " + command + "not found, you can get help by typing " + App.PREFIX + "help").queue();
     }
 
 
