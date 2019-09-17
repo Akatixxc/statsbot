@@ -4,25 +4,25 @@ package fi.kooditiimi.league;
 public class LeagueProfile {
 
     private String summonerID;
+    private String accountID;
     private String summonerName;
     private String summonerServer;
     private int summonerLevel;
     private String summonerRank;
-    private int summonerLeaguePoints;
     private int summonerRankedWins;
-    private int summonerRankedLoses;
-    private int profilePictureId;
+    private int summonerRankedLosses;
+    private int profileIconId;
 
-    public LeagueProfile(String summonerID, String summonerName, String summonerServer, int summonerLevel, String summonerRank, int summonerLeaguePoints, int summonerRankedWins, int summonerRankedLoses, int profilePictureId) {
+    public LeagueProfile(String summonerID, String accountID, String summonerName, String summonerServer, int summonerLevel, String summonerRank, int summonerRankedWins, int summonerRankedLosses, int profileIconId) {
         this.summonerID = summonerID;
+        this.accountID = accountID;
         this.summonerName = summonerName;
         this.summonerServer = summonerServer;
         this.summonerLevel = summonerLevel;
         this.summonerRank = summonerRank;
-        this.summonerLeaguePoints = summonerLeaguePoints;
         this.summonerRankedWins = summonerRankedWins;
-        this.summonerRankedLoses = summonerRankedLoses;
-        this.profilePictureId = profilePictureId;
+        this.summonerRankedLosses = summonerRankedLosses;
+        this.profileIconId = profileIconId;
     }
 
     public String getSummonerID() {
@@ -31,6 +31,14 @@ public class LeagueProfile {
 
     public void setSummonerID(String summonerID) {
         this.summonerID = summonerID;
+    }
+
+    public String getAccountID() {
+        return accountID;
+    }
+
+    public void setAccountID() {
+        this.accountID = accountID;
     }
 
     public String getSummonerName() {
@@ -65,14 +73,6 @@ public class LeagueProfile {
         this.summonerRank = summonerRank;
     }
 
-    public int getSummonerLeaguePoints() {
-        return summonerLeaguePoints;
-    }
-
-    public void setSummonerLeaguePoints(int summonerLeaguePoints) {
-        this.summonerLeaguePoints = summonerLeaguePoints;
-    }
-
     public int getSummonerRankedWins() {
         return summonerRankedWins;
     }
@@ -82,18 +82,18 @@ public class LeagueProfile {
     }
 
     public int getSummonerRankedLoses() {
-        return summonerRankedLoses;
+        return summonerRankedLosses;
     }
 
     public void setSummonerRankedLoses(int summonerRankedLoses) {
-        this.summonerRankedLoses = summonerRankedLoses;
+        this.summonerRankedLosses = summonerRankedLoses;
     }
 
-    public int getProfilePictureId() {
-        return profilePictureId;
+    public int getProfileIconId() {
+        return profileIconId;
     }
 
-    public void setProfilePictureId(int profilePictureId) {
-        this.profilePictureId = profilePictureId;
+    public void setProfileIconId(int profileIconId) {
+        this.profileIconId = profileIconId;
     }
 }
