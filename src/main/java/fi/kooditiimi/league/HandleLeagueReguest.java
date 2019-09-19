@@ -3,6 +3,8 @@ package fi.kooditiimi.league;
 import fi.kooditiimi.App;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.awt.*;
 
@@ -34,6 +36,7 @@ public class HandleLeagueReguest {
                 printProfile(event, name, server);
                 break;
             case "game":
+                printGame(event, name, server);
                 break;
             default:
                 printCommandNotFoundMessage(event, command);
@@ -48,27 +51,61 @@ public class HandleLeagueReguest {
 
     private void printProfile(GuildMessageReceivedEvent event, String name, String server) {
         LeagueAPI api = new LeagueAPI();
-        LeagueProfile profile = api.getProfile(name, server);
+        LeagueProfile profile = api.getProfileByName(name, server);
 
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setThumbnail("http://stelar7.no/cdragon/latest/profile-icons/" + profile.getProfileIconId() + ".jpg");
         embed.setTitle(profile.getSummonerName());
-        embed.addField("Level:", String.valueOf(profile.getSummonerLevel()), true);
+        embed.addField("Level:", String.valueOf(profile.getSummonerLevel()), false);
 
-        embed.addField("Rank:", profile.getSummonerRank(), true);
+        embed.addField("Rank:", profile.getSummonerRank(), false);
 
         if(!profile.getSummonerRank().equals("Unranked")) {
             int wins = profile.getSummonerRankedWins();
-            int losses = profile.getSummonerRankedLoses();
+            int losses = profile.getSummonerRankedLosses();
             int winRatio = wins * 100 / (wins + losses);
 
-            embed.addField("Ranked W/L/%", wins + " / " + losses + " / " + winRatio + "%", true);
+            embed.addField("Ranked W/L/%", wins + " / " + losses + " / " + winRatio + "%", false);
         }
 
         embed.setColor(Color.RED);
         event.getChannel().sendMessage(embed.build()).queue();
         embed.clear();
+    }
+
+    private void printGame(GuildMessageReceivedEvent event, String name, String server) {
+        try {
+            LeagueAPI api = new LeagueAPI();
+            JSONObject gameJSON = api.getGame(name, server);
+
+            EmbedBuilder embed = new EmbedBuilder();
+            JSONArray gameArray = new JSONArray(gameJSON.getJSONArray("participants").toString());
+
+            for(int i = 0; i < gameArray.length(); i++) {
+                try {
+                    JSONObject summonerGame = gameArray.getJSONObject(i);
+                    LeagueProfile profile = api.getInGameProfile(summonerGame.getString("summonerId"), server);
+
+                    int gamesPlayed = profile.getSummonerRankedWins() + profile.getSummonerRankedLosses();
+                    int wlr = profile.getSummonerRankedWins()*100/gamesPlayed;
+
+                    embed.setAuthor(summonerGame.getString("summonerName") + " | " + profile.getSummonerRank(),
+                            "http://stelar7.no/cdragon/latest/champion-icons/" + summonerGame.getInt("championId") + ".png",
+                            "http://stelar7.no/cdragon/latest/champion-icons/" + summonerGame.getInt("championId") + ".png");
+                    embed.setDescription("**" + wlr + "**" + "% win rate in " + gamesPlayed + " games");
+
+                    if (summonerGame.getLong("teamId") == 100) {
+                        embed.setColor(42239);
+                    } else {
+                        embed.setColor(Color.RED);
+                    }
+                    event.getChannel().sendMessage(embed.build()).queue();
+                    embed.clear();
+
+                }catch(Exception e){ System.err.println(e); }
+            }
+        } catch (Exception e) { System.err.println(e); }
     }
 
 }

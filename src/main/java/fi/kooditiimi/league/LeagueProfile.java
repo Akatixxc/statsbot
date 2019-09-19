@@ -25,6 +25,14 @@ public class LeagueProfile {
         this.profileIconId = profileIconId;
     }
 
+    public LeagueProfile(String summonerID, String summonerServer, String summonerRank, int summonerRankedWins, int summonerRankedLosses) {
+        this.summonerID = summonerID;
+        this.summonerServer = summonerServer;
+        this.summonerRank = summonerRank;
+        this.summonerRankedWins = summonerRankedWins;
+        this.summonerRankedLosses = summonerRankedLosses;
+    }
+
     public String getSummonerID() {
         return summonerID;
     }
@@ -81,7 +89,7 @@ public class LeagueProfile {
         this.summonerRankedWins = summonerRankedWins;
     }
 
-    public int getSummonerRankedLoses() {
+    public int getSummonerRankedLosses() {
         return summonerRankedLosses;
     }
 
