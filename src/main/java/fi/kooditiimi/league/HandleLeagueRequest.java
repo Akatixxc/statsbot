@@ -8,9 +8,11 @@ import org.json.JSONObject;
 
 import java.awt.*;
 
-public class HandleLeagueReguest {
+public class HandleLeagueRequest {
 
-    public HandleLeagueReguest() {
+    private static String SERVER = "eun1";
+
+    public HandleLeagueRequest() {
     }
 
     public void handleRequest(String[] args, GuildMessageReceivedEvent event) {
@@ -19,13 +21,12 @@ public class HandleLeagueReguest {
 
         String command;
         String name;
-        String server;
 
         try {
             command = args[1];
             name = args[2];
-            server = args[3];
-        } catch (IndexOutOfBoundsException e) {
+        }
+        catch (IndexOutOfBoundsException e) {
             System.err.println("Command not formed well: " + e);
             event.getChannel().sendMessage("Command not formed well").queue();
             return;
@@ -33,10 +34,13 @@ public class HandleLeagueReguest {
 
         switch (command) {
             case "profile":
-                printProfile(event, name, server);
+                printProfile(event, name, SERVER);
                 break;
             case "game":
-                printGame(event, name, server);
+                printGame(event, name, SERVER);
+                break;
+            case "server":
+                setServer(event, name); //name = kolmas arqumentti
                 break;
             default:
                 printCommandNotFoundMessage(event, command);
@@ -55,7 +59,8 @@ public class HandleLeagueReguest {
 
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setThumbnail("http://stelar7.no/cdragon/latest/profile-icons/" + profile.getProfileIconId() + ".jpg");
+        //ddragon url pitää päivittää uusimpaan versioon jos se ei löydä pikkukuvaa (9.18.1)
+        embed.setThumbnail("http://ddragon.leagueoflegends.com/cdn/9.18.1/img/profileicon/" + profile.getProfileIconId() + ".png");
         embed.setTitle(profile.getSummonerName());
         embed.addField("Level:", String.valueOf(profile.getSummonerLevel()), false);
 
@@ -112,4 +117,59 @@ public class HandleLeagueReguest {
         } catch (Exception e) { System.err.println(e); }
     }
 
+    private void setServer(GuildMessageReceivedEvent event, String server) {
+        switch (server) {
+            case "br":
+                SERVER = "br1";
+                event.getChannel().sendMessage("Server set to Brazil. (br1)").queue();
+                break;
+            case "eune":
+                SERVER = "eun1";
+                event.getChannel().sendMessage("Server set to EU Nordic and East. (eun1)").queue();
+                break;
+            case "euw":
+                SERVER = "euw1";
+                event.getChannel().sendMessage("Server set to EU West. (euw1)").queue();
+                break;
+            case "jp":
+                SERVER = "jp1";
+                event.getChannel().sendMessage("Server set to Japan. (jp1)").queue();
+                break;
+            case "kr":
+                SERVER = "kr";
+                event.getChannel().sendMessage("Server set to Korea. (kr)").queue();
+                break;
+            case "lan":
+                SERVER = "la1";
+                event.getChannel().sendMessage("Server set to Latin America North. (lan)").queue();
+                break;
+            case "las":
+                SERVER = "la2";
+                event.getChannel().sendMessage("Server set to Latin America South. (la2)").queue();
+                break;
+            case "na":
+                SERVER = "na1";
+                event.getChannel().sendMessage("Server set to North America. (na1)").queue();
+                break;
+            case "oce":
+                SERVER = "oc1";
+                event.getChannel().sendMessage("Server set to Oceania. (oc1)").queue();
+                break;
+            case "ru":
+                SERVER = "ru";
+                event.getChannel().sendMessage("Server set to Russia. (ru)").queue();
+                break;
+            case "tr":
+                SERVER = "tr1";
+                event.getChannel().sendMessage("Server set to Turkey. (tr1)").queue();
+                break;
+            default:
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setTitle("Current region: " + SERVER);
+                embed.addField("Valid servers:", "EUNE, EUW, NA, Ru, Kr, Jp, Br, Tr, LAN, LAS, OCE", true);
+                embed.setColor(Color.RED);
+                event.getChannel().sendMessage(embed.build()).queue();
+                embed.clear();
+        }
+    }
 }

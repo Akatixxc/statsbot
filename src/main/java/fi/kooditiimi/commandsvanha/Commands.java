@@ -1,7 +1,7 @@
 package fi.kooditiimi.commandsvanha;
 
 import fi.kooditiimi.App;
-import fi.kooditiimi.league.HandleLeagueReguest;
+import fi.kooditiimi.league.HandleLeagueRequest;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -29,7 +29,7 @@ public class Commands extends ListenerAdapter {
                 info.printHelperMessage();
                 break;
             case "lol":
-                HandleLeagueReguest lolrequest = new HandleLeagueReguest();
+                HandleLeagueRequest lolrequest = new HandleLeagueRequest();
                 lolrequest.handleRequest(args, event);
                 break;
             default:
