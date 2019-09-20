@@ -87,13 +87,17 @@ public class HandleLeagueReguest {
                     JSONObject summonerGame = gameArray.getJSONObject(i);
                     LeagueProfile profile = api.getInGameProfile(summonerGame.getString("summonerId"), server);
 
-                    int gamesPlayed = profile.getSummonerRankedWins() + profile.getSummonerRankedLosses();
-                    int wlr = profile.getSummonerRankedWins()*100/gamesPlayed;
-
                     embed.setAuthor(summonerGame.getString("summonerName") + " | " + profile.getSummonerRank(),
                             "http://stelar7.no/cdragon/latest/champion-icons/" + summonerGame.getInt("championId") + ".png",
                             "http://stelar7.no/cdragon/latest/champion-icons/" + summonerGame.getInt("championId") + ".png");
-                    embed.setDescription("**" + wlr + "**" + "% win rate in " + gamesPlayed + " games");
+
+                    if(!profile.getSummonerRank().equals("Unranked")) {
+                        int wins = profile.getSummonerRankedWins();
+                        int losses = profile.getSummonerRankedLosses();
+                        int winRatio = wins * 100 / (wins + losses);
+
+                        embed.setDescription("**" + winRatio + "**" + "% win rate in " + (wins + losses) + " games");
+                    }
 
                     if (summonerGame.getLong("teamId") == 100) {
                         embed.setColor(42239);

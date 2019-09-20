@@ -3,8 +3,8 @@ package fi.kooditiimi.league;
 //TODO: tee tästä builder helpottaisi varmasti objektien tekemistä
 public class LeagueProfile {
 
-    private String summonerID;
-    private String accountID;
+    private String summonerId;
+    private String accountId;
     private String summonerName;
     private String summonerServer;
     private int summonerLevel;
@@ -13,9 +13,9 @@ public class LeagueProfile {
     private int summonerRankedLosses;
     private int profileIconId;
 
-    public LeagueProfile(String summonerID, String accountID, String summonerName, String summonerServer, int summonerLevel, String summonerRank, int summonerRankedWins, int summonerRankedLosses, int profileIconId) {
-        this.summonerID = summonerID;
-        this.accountID = accountID;
+    public LeagueProfile(String summonerId, String accountId, String summonerName, String summonerServer, int summonerLevel, String summonerRank, int summonerRankedWins, int summonerRankedLosses, int profileIconId) {
+        this.summonerId = summonerId;
+        this.accountId = accountId;
         this.summonerName = summonerName;
         this.summonerServer = summonerServer;
         this.summonerLevel = summonerLevel;
@@ -25,28 +25,28 @@ public class LeagueProfile {
         this.profileIconId = profileIconId;
     }
 
-    public LeagueProfile(String summonerID, String summonerServer, String summonerRank, int summonerRankedWins, int summonerRankedLosses) {
-        this.summonerID = summonerID;
+    public LeagueProfile(String summonerId, String summonerServer, String summonerRank, int summonerRankedWins, int summonerRankedLosses) {
+        this.summonerId = summonerId;
         this.summonerServer = summonerServer;
         this.summonerRank = summonerRank;
         this.summonerRankedWins = summonerRankedWins;
         this.summonerRankedLosses = summonerRankedLosses;
     }
 
-    public String getSummonerID() {
-        return summonerID;
+    public String getSummonerId() {
+        return summonerId;
     }
 
-    public void setSummonerID(String summonerID) {
-        this.summonerID = summonerID;
+    public void setSummonerId(String summonerId) {
+        this.summonerId = summonerId;
     }
 
-    public String getAccountID() {
-        return accountID;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setAccountID() {
-        this.accountID = accountID;
+    public void setAccountId() {
+        this.accountId = accountId;
     }
 
     public String getSummonerName() {

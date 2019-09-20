@@ -15,24 +15,24 @@ public class LeagueAPI {
 
     public LeagueProfile getProfileByName(String name, String server) {
         HttpResponse<String> summonerByNameRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/summoner/v4/summoners/by-name/" + name);
+        JSONObject summonerByNameJSON = new JSONObject(summonerByNameRequest.body());
 
-        JSONObject summonerIdJson = new JSONObject(summonerByNameRequest.body());
-        String summonerId = summonerIdJson.getString("id");
-        String accountID = summonerIdJson.getString("accountId");
-        String summonerName = summonerIdJson.getString("name");
+        String summonerId = summonerByNameJSON.getString("id");
+        String accountId = summonerByNameJSON.getString("accountId");
+        String summonerName = summonerByNameJSON.getString("name");
         //server tässä välissä, mutta käytetään tota jo annettua
-        int summonerLevel = summonerIdJson.getInt("summonerLevel");
-        int profileIconId = summonerIdJson.getInt("profileIconId");
+        int summonerLevel = summonerByNameJSON.getInt("summonerLevel");
+        int profileIconId = summonerByNameJSON.getInt("profileIconId");
+
+        HttpResponse<String> summonerLeagueBySummonerIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId);
+        JSONArray summonerLeagueBySummonerIdJSON = new JSONArray(summonerLeagueBySummonerIdRequest.body());
 
         String summonerRank = "Unranked";
         int summonerRankedWins = 0, summonerRankedLosses = 0;
 
-        HttpResponse<String> summonerLeagueBySummonerIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId);
-        JSONArray summonerLeagueArray = new JSONArray(summonerLeagueBySummonerIdRequest.body());
-
-        if (!summonerLeagueArray.isEmpty()) {
-            for (int i = 0; i < summonerLeagueArray.length(); i++) {
-                JSONObject summonerLeague = summonerLeagueArray.getJSONObject(i);
+        if (!summonerLeagueBySummonerIdJSON.isEmpty()) {
+            for (int i = 0; i < summonerLeagueBySummonerIdJSON.length(); i++) {
+                JSONObject summonerLeague = summonerLeagueBySummonerIdJSON.getJSONObject(i);
                 if (summonerLeague.getString("queueType").equals("RANKED_SOLO_5x5")) {
                     summonerRank = summonerLeague.getString("tier") + " " +
                             summonerLeague.getString("rank") + " " +
@@ -45,21 +45,21 @@ public class LeagueAPI {
 
         }
 
-        return new LeagueProfile(summonerId, accountID, summonerName, server, summonerLevel, summonerRank, summonerRankedWins, summonerRankedLosses, profileIconId);
+        return new LeagueProfile(summonerId, accountId, summonerName, server, summonerLevel, summonerRank, summonerRankedWins, summonerRankedLosses, profileIconId);
     }
 
     //Käytetään game komennon kanssa
     public LeagueProfile getInGameProfile(String summonerId, String server) {
 
+        HttpResponse<String> summonerLeagueBySummonerIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId);
+        JSONArray summonerLeagueBySummonerIdJSON = new JSONArray(summonerLeagueBySummonerIdRequest.body());
+
         String summonerRank = "Unranked";
         int summonerRankedWins = 0, summonerRankedLosses = 0;
 
-        HttpResponse<String> summonerLeagueBySummonerIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId);
-        JSONArray summonerLeagueArray = new JSONArray(summonerLeagueBySummonerIdRequest.body());
-
-        if (!summonerLeagueArray.isEmpty()) {
-            for (int i = 0; i < summonerLeagueArray.length(); i++) {
-                JSONObject summonerLeague = summonerLeagueArray.getJSONObject(i);
+        if (!summonerLeagueBySummonerIdJSON.isEmpty()) {
+            for (int i = 0; i < summonerLeagueBySummonerIdJSON.length(); i++) {
+                JSONObject summonerLeague = summonerLeagueBySummonerIdJSON.getJSONObject(i);
                 if (summonerLeague.getString("queueType").equals("RANKED_SOLO_5x5")) {
                     summonerRank = summonerLeague.getString("tier") + " " +
                             summonerLeague.getString("rank");
@@ -77,11 +77,9 @@ public class LeagueAPI {
     public JSONObject getGame(String name, String server){
 
         HttpResponse<String> summonerByNameRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/summoner/v4/summoners/by-name/" + name);
+        JSONObject summonerByNameJSON = new JSONObject(summonerByNameRequest.body());
 
-        JSONObject summonerIdJson = new JSONObject(summonerByNameRequest.body());
-
-        HttpResponse<String> gameByIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/spectator/v4/active-games/by-summoner/" + summonerIdJson.getString("id"));
-
+        HttpResponse<String> gameByIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/spectator/v4/active-games/by-summoner/" + summonerByNameJSON.getString("id"));
         return new JSONObject(gameByIdRequest.body());
     }
 
