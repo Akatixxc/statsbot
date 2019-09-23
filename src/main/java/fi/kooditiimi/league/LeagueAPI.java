@@ -1,6 +1,7 @@
 package fi.kooditiimi.league;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -14,38 +15,44 @@ public class LeagueAPI {
     }
 
     public LeagueProfile getProfileByName(String name, String server) {
-        HttpResponse<String> summonerByNameRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/summoner/v4/summoners/by-name/" + name);
-        JSONObject summonerByNameJSON = new JSONObject(summonerByNameRequest.body());
+        try {
+            HttpResponse<String> summonerByNameRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/summoner/v4/summoners/by-name/" + name);
+            JSONObject summonerByNameJSON = new JSONObject(summonerByNameRequest.body());
 
-        String summonerId = summonerByNameJSON.getString("id");
-        String accountId = summonerByNameJSON.getString("accountId");
-        String summonerName = summonerByNameJSON.getString("name");
-        //server tässä välissä, mutta käytetään tota jo annettua
-        int summonerLevel = summonerByNameJSON.getInt("summonerLevel");
-        int profileIconId = summonerByNameJSON.getInt("profileIconId");
+            String summonerId = summonerByNameJSON.getString("id");
+            String accountId = summonerByNameJSON.getString("accountId");
+            String summonerName = summonerByNameJSON.getString("name");
+            //server tässä välissä, mutta käytetään tota jo annettua
+            int summonerLevel = summonerByNameJSON.getInt("summonerLevel");
+            int profileIconId = summonerByNameJSON.getInt("profileIconId");
 
-        HttpResponse<String> summonerLeagueBySummonerIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId);
-        JSONArray summonerLeagueBySummonerIdJSON = new JSONArray(summonerLeagueBySummonerIdRequest.body());
+            HttpResponse<String> summonerLeagueBySummonerIdRequest = makeLeagueReguest("https://" + server + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId);
+            JSONArray summonerLeagueBySummonerIdJSON = new JSONArray(summonerLeagueBySummonerIdRequest.body());
 
-        String summonerRank = "Unranked";
-        int summonerRankedWins = 0, summonerRankedLosses = 0;
+            String summonerRank = "Unranked";
+            int summonerRankedWins = 0, summonerRankedLosses = 0;
 
-        if (!summonerLeagueBySummonerIdJSON.isEmpty()) {
-            for (int i = 0; i < summonerLeagueBySummonerIdJSON.length(); i++) {
-                JSONObject summonerLeague = summonerLeagueBySummonerIdJSON.getJSONObject(i);
-                if (summonerLeague.getString("queueType").equals("RANKED_SOLO_5x5")) {
-                    summonerRank = summonerLeague.getString("tier") + " " +
-                            summonerLeague.getString("rank") + " " +
-                            summonerLeague.getInt("leaguePoints") + " LP";
-                    summonerRankedWins = summonerLeague.getInt("wins");
-                    summonerRankedLosses = summonerLeague.getInt("losses");
-                    break;
+            if (!summonerLeagueBySummonerIdJSON.isEmpty()) {
+                for (int i = 0; i < summonerLeagueBySummonerIdJSON.length(); i++) {
+                    JSONObject summonerLeague = summonerLeagueBySummonerIdJSON.getJSONObject(i);
+                    if (summonerLeague.getString("queueType").equals("RANKED_SOLO_5x5")) {
+                        summonerRank = summonerLeague.getString("tier") + " " +
+                                summonerLeague.getString("rank") + " " +
+                                summonerLeague.getInt("leaguePoints") + " LP";
+                        summonerRankedWins = summonerLeague.getInt("wins");
+                        summonerRankedLosses = summonerLeague.getInt("losses");
+                        break;
+                    }
                 }
+
             }
 
+            return new LeagueProfile(summonerId, accountId, summonerName, server, summonerLevel, summonerRank, summonerRankedWins, summonerRankedLosses, profileIconId);
+        }catch (JSONException e) {
+            //Jos summoneria ei ole olemassa
+            //System.err.println(e);
+            return null;
         }
-
-        return new LeagueProfile(summonerId, accountId, summonerName, server, summonerLevel, summonerRank, summonerRankedWins, summonerRankedLosses, profileIconId);
     }
 
     //Käytetään game komennon kanssa

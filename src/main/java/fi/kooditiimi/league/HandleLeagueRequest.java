@@ -17,8 +17,6 @@ public class HandleLeagueRequest {
 
     public void handleRequest(String[] args, GuildMessageReceivedEvent event) {
 
-        LeagueAPI api = new LeagueAPI();
-
         String command;
         String name;
 
@@ -54,29 +52,39 @@ public class HandleLeagueRequest {
     }
 
     private void printProfile(GuildMessageReceivedEvent event, String name, String server) {
-        LeagueAPI api = new LeagueAPI();
-        LeagueProfile profile = api.getProfileByName(name, server);
+        try {
+            LeagueAPI api = new LeagueAPI();
+            LeagueProfile profile = api.getProfileByName(name, server);
 
-        EmbedBuilder embed = new EmbedBuilder();
+            EmbedBuilder embed = new EmbedBuilder();
 
-        //ddragon url pitää päivittää uusimpaan versioon jos se ei löydä pikkukuvaa (9.18.1)
-        embed.setThumbnail("http://ddragon.leagueoflegends.com/cdn/9.18.1/img/profileicon/" + profile.getProfileIconId() + ".png");
-        embed.setTitle(profile.getSummonerName());
-        embed.addField("Level:", String.valueOf(profile.getSummonerLevel()), false);
+            //ddragon url pitää päivittää uusimpaan versioon jos se ei löydä pikkukuvaa (9.18.1)
+            embed.setThumbnail("http://ddragon.leagueoflegends.com/cdn/9.18.1/img/profileicon/" + profile.getProfileIconId() + ".png");
+            embed.setTitle(profile.getSummonerName());
+            embed.addField("Level:", String.valueOf(profile.getSummonerLevel()), false);
 
-        embed.addField("Rank:", profile.getSummonerRank(), false);
+            embed.addField("Rank:", profile.getSummonerRank(), false);
 
-        if(!profile.getSummonerRank().equals("Unranked")) {
-            int wins = profile.getSummonerRankedWins();
-            int losses = profile.getSummonerRankedLosses();
-            int winRatio = wins * 100 / (wins + losses);
+            if (!profile.getSummonerRank().equals("Unranked")) {
+                int wins = profile.getSummonerRankedWins();
+                int losses = profile.getSummonerRankedLosses();
+                int winRatio = wins * 100 / (wins + losses);
 
-            embed.addField("Ranked W/L/%", wins + " / " + losses + " / " + winRatio + "%", false);
+                embed.addField("Ranked W/L/%", wins + " / " + losses + " / " + winRatio + "%", false);
+            }
+
+            embed.setColor(Color.RED);
+            event.getChannel().sendMessage(embed.build()).queue();
+            embed.clear();
         }
-
-        embed.setColor(Color.RED);
-        event.getChannel().sendMessage(embed.build()).queue();
-        embed.clear();
+        catch (NullPointerException e) {
+            //System.err.println(e);
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.addField("Summoner not found", "If name has spaces use _ (underscore). Also make sure you are on the right server.", true);
+            embed.setColor(Color.RED);
+            event.getChannel().sendMessage(embed.build()).queue();
+            embed.clear();
+        }
     }
 
     private void printGame(GuildMessageReceivedEvent event, String name, String server) {
@@ -114,7 +122,15 @@ public class HandleLeagueRequest {
 
                 }catch(Exception e){ System.err.println(e); }
             }
-        } catch (Exception e) { System.err.println(e); }
+        } catch (Exception e) {
+            //System.err.println(e);
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.addField("Summoner not found or he isn't in game",
+                    "If name has spaces use _ (underscore). Also make sure you are on the right server.", true);
+            embed.setColor(Color.RED);
+            event.getChannel().sendMessage(embed.build()).queue();
+            embed.clear();
+        }
     }
 
     private void setServer(GuildMessageReceivedEvent event, String server) {
