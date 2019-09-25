@@ -1,6 +1,7 @@
 package fi.kooditiimi.commandsvanha;
 
 import fi.kooditiimi.App;
+import fi.kooditiimi.faceit.HandleFaceitRequest;
 import fi.kooditiimi.league.HandleLeagueRequest;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -32,25 +33,12 @@ public class Commands extends ListenerAdapter {
                 HandleLeagueRequest lolrequest = new HandleLeagueRequest();
                 lolrequest.handleRequest(args, event);
                 break;
+            case "faceit":
+                HandleFaceitRequest faceitrequest = new HandleFaceitRequest();
+                faceitrequest.handleRequest(args, event);
             default:
                 printCommandNotFoundMessage(event, firstArgument);
         }
-
-/*
-        if(prefixAndCommandOrGame.equals(App.PREFIX + "lol")) {
-
-            if (region.equals("profile")) {
-                CommandLolProfile.commandStats(event, player);
-            }
-            if (region.equals("region")) {
-                if (player != null) {
-                    System.out.println("DDASDADA");
-                    CommandLolRegion.commandLolRegion(event, region.toLowerCase());  //TODO vähän heikko suoritus
-                }
-                CommandLolRegion.commandLolRegion(event, player.toLowerCase());
-            }
-        }
-        */
     }
 
     private void printCommandNotFoundMessage(GuildMessageReceivedEvent event, String command) {
