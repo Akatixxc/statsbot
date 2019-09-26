@@ -145,4 +145,16 @@ public class FaceitProfile {
     public void setWinRate(String winRate) {
         this.winRate = winRate;
     }
+
+    public String recentMatchesToString() {
+        StringBuilder recentMatchesString = new StringBuilder();
+        for (String alkio : recentMatches) {
+            if (alkio.equals("1")) {
+                recentMatchesString.append("W ");
+            } else {
+                recentMatchesString.append("L ");
+            }
+        }
+        return recentMatchesString.toString();
+    }
 }

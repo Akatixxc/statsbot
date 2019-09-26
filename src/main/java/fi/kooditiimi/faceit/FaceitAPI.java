@@ -18,7 +18,7 @@ public class FaceitAPI {
         JSONObject profileByNameJSON = new JSONObject(profileByNameRequest.body());
 
         String playerId = profileByNameJSON.getString("player_id");
-        String nickname = name;
+        String nickname = profileByNameJSON.getString("nickname");
         String avatar = profileByNameJSON.getString("avatar");
         String country = profileByNameJSON.getString("country");
 
@@ -37,10 +37,10 @@ public class FaceitAPI {
         String currentWS = lifetimeJSON.getString("Current Win Streak");
         String longestWS = lifetimeJSON.getString("Longest Win Streak");
 
-        JSONArray recetMatchesJSON = new JSONArray(lifetimeJSON.get("Recent Results"));
-        String[] recentMatches = new String[recetMatchesJSON.length()];
-        for (int i = 0; i < recetMatchesJSON.length(); i++ ){
-            recentMatches[i] = recetMatchesJSON.getJSONArray(i).toString();
+        JSONArray recentMatchesJSON = new JSONArray(lifetimeJSON.get("Recent Results").toString());
+        String[] recentMatches = new String[recentMatchesJSON.length()];
+        for (int i = 0; i < recentMatchesJSON.length(); i++ ){
+            recentMatches[i] = recentMatchesJSON.get(i).toString();
         }
 
         String matches = lifetimeJSON.getString("Matches");
@@ -52,7 +52,6 @@ public class FaceitAPI {
 
     private HttpResponse<String> makeFaceitReguest(String url) {
         try {
-            System.out.println("Toimii");
             HttpClient client = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()

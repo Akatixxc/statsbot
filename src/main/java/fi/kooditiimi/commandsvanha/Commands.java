@@ -36,6 +36,7 @@ public class Commands extends ListenerAdapter {
             case "faceit":
                 HandleFaceitRequest faceitrequest = new HandleFaceitRequest();
                 faceitrequest.handleRequest(args, event);
+                break;
             default:
                 printCommandNotFoundMessage(event, firstArgument);
         }
