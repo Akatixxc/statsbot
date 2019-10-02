@@ -62,23 +62,17 @@ public class HandleLeagueRequest {
             embed.setThumbnail("http://ddragon.leagueoflegends.com/cdn/9.18.1/img/profileicon/" + profile.getProfileIconId() + ".png");
             embed.setTitle(profile.getSummonerName());
             embed.addField("Level:", String.valueOf(profile.getSummonerLevel()), false);
-
             embed.addField("Rank:", profile.getSummonerRank(), false);
-
             if (!profile.getSummonerRank().equals("Unranked")) {
-                int wins = profile.getSummonerRankedWins();
-                int losses = profile.getSummonerRankedLosses();
-                int winRatio = wins * 100 / (wins + losses);
-
-                embed.addField("Ranked W/L/%", wins + " / " + losses + " / " + winRatio + "%", false);
+                embed.addField("Ranked W/L/%", profile.getSummonerRankedWins() + " / " +
+                        profile.getSummonerRankedLosses() + " / " +
+                        profile.getSummonerRankedWinRate() + "%", false);
             }
-
             embed.setColor(Color.RED);
             event.getChannel().sendMessage(embed.build()).queue();
             embed.clear();
         }
         catch (NullPointerException e) {
-            //System.err.println(e);
             EmbedBuilder embed = new EmbedBuilder();
             embed.addField("Summoner not found", "If name has spaces use _ (underscore). Also make sure you are on the right server.", true);
             embed.setColor(Color.RED);
@@ -103,15 +97,10 @@ public class HandleLeagueRequest {
                     embed.setAuthor(summonerGame.getString("summonerName") + " | " + profile.getSummonerRank(),
                             "http://stelar7.no/cdragon/latest/champion-icons/" + summonerGame.getInt("championId") + ".png",
                             "http://stelar7.no/cdragon/latest/champion-icons/" + summonerGame.getInt("championId") + ".png");
-
                     if(!profile.getSummonerRank().equals("Unranked")) {
-                        int wins = profile.getSummonerRankedWins();
-                        int losses = profile.getSummonerRankedLosses();
-                        int winRatio = wins * 100 / (wins + losses);
-
-                        embed.setDescription("**" + winRatio + "**" + "% win rate in " + (wins + losses) + " games");
+                        embed.setDescription("**" + profile.getSummonerRankedWinRate() + "**" + "% win rate in " +
+                                profile.getSummonerTotalRankedGames() + " games");
                     }
-
                     if (summonerGame.getLong("teamId") == 100) {
                         embed.setColor(42239);
                     } else {
@@ -120,7 +109,9 @@ public class HandleLeagueRequest {
                     event.getChannel().sendMessage(embed.build()).queue();
                     embed.clear();
 
-                }catch(Exception e){ System.err.println(e); }
+                }catch(Exception e) {
+                    event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Couldnt find profile").build()).queue();
+                }
             }
         } catch (Exception e) {
             //System.err.println(e);

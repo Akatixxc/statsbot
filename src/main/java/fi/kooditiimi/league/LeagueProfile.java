@@ -104,4 +104,12 @@ public class LeagueProfile {
     public void setProfileIconId(int profileIconId) {
         this.profileIconId = profileIconId;
     }
+
+    public int getSummonerRankedWinRate() {
+        return this.getSummonerRankedWins() * 100 / (this.getSummonerRankedWins() + this.getSummonerRankedLosses());
+    }
+
+    public int getSummonerTotalRankedGames() {
+        return this.summonerRankedWins + this.getSummonerRankedLosses();
+    }
 }
