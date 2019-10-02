@@ -21,8 +21,7 @@ public class HandleFaceitRequest {
             name = args[2];
         }
         catch (IndexOutOfBoundsException e) {
-            System.err.println("Command not formed well: " + e);
-            event.getChannel().sendMessage("Command not formed well").queue();
+            printCommandNotFoundMessage(event, "");
             return;
         }
 
@@ -30,9 +29,9 @@ public class HandleFaceitRequest {
             case "profile":
                 printProfile(event, name);
                 break;
-            case "game":            //Joskus voisi tehdä esim 5 viimeistä peliä
+            /*case "game":            //Joskus voisi tehdä esim 5 viimeistä peliä
                 printProfile(event, name);
-                break;
+                break;*/
             default:
                 printCommandNotFoundMessage(event, command);
 
@@ -40,31 +39,36 @@ public class HandleFaceitRequest {
     }
 
     private void printCommandNotFoundMessage(GuildMessageReceivedEvent event, String command) {
-        event.getChannel().sendMessage("Command: " + command + " not found, you can get help by typing " + App.PREFIX + "help").queue();
+        event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Command " + command + " not found, you can get help by typing: " + App.PREFIX + "help").build()).queue();
     }
 
     private void printProfile(GuildMessageReceivedEvent event, String name) {
         
         FaceitAPI api = new FaceitAPI();
         FaceitProfile profile = api.getProfileByName(name);
-        EmbedBuilder embed = new EmbedBuilder();
 
-        //embed.setThumbnail(profile.getAvatar());
-        embed.setTitle(profile.getNickname());
-        embed.setDescription(" *from " + profile.getCountry() + "*");
-        embed.addField("Skill level:", String.valueOf(profile.getSkillLevel()), true);
-        embed.addField("ELO:", String.valueOf(profile.getFaceitElo()), true);
-        embed.addField("Average K/D:", profile.getAverageKD(), true);
-        embed.addField("Average Headshot %:", profile.getAverageHS() + " %", true);
-        embed.addField("Win Rate:", profile.getWinRate() + " %", true);
-        embed.addField("Recent matches:", profile.recentMatchesToString(), true);
-        embed.addField("Won Matches:", profile.getWins(), true);
-        embed.addField("Total Matches:", profile.getMatches(), true);
-        embed.addField("Current Win Streak", profile.getCurrentWS(), true);
-        embed.addField("Longest Win Streak:", profile.getLongestWS(), true);
-        embed.setColor(Color.RED);
-        event.getChannel().sendMessage(embed.build()).queue();
-        embed.clear();
+        if (profile == null) {
+            event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).addField("Player not found","Use upper and lower cased letters if needed", true).build()).queue();
+        } else {
+            EmbedBuilder embed = new EmbedBuilder();
+
+            if (!profile.getAvatar().equals("")) embed.setThumbnail(profile.getAvatar());
+            embed.setTitle(profile.getNickname());
+            embed.setDescription(" *from " + profile.getCountry() + "*");
+            embed.addField("Skill level:", String.valueOf(profile.getSkillLevel()), true);
+            embed.addField("ELO:", String.valueOf(profile.getFaceitElo()), true);
+            embed.addField("Average K/D:", profile.getAverageKD(), true);
+            embed.addField("Average Headshot %:", profile.getAverageHS() + " %", true);
+            embed.addField("Win Rate:", profile.getWinRate() + " %", true);
+            embed.addField("Recent matches:", profile.recentMatchesToString(), true);
+            embed.addField("Won Matches:", profile.getWins(), true);
+            embed.addField("Total Matches:", profile.getMatches(), true);
+            embed.addField("Current Win Streak", profile.getCurrentWS(), true);
+            embed.addField("Longest Win Streak:", profile.getLongestWS(), true);
+            embed.setColor(Color.RED);
+            event.getChannel().sendMessage(embed.build()).queue();
+            embed.clear();
+        }
     }
 
 }

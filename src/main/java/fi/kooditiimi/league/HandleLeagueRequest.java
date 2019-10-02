@@ -26,7 +26,7 @@ public class HandleLeagueRequest {
         }
         catch (IndexOutOfBoundsException e) {
             System.err.println("Command not formed well: " + e);
-            event.getChannel().sendMessage("Command not formed well").queue();
+            printCommandNotFoundMessage(event, "");
             return;
         }
 
@@ -48,7 +48,7 @@ public class HandleLeagueRequest {
     }
 
     private void printCommandNotFoundMessage(GuildMessageReceivedEvent event, String command) {
-        event.getChannel().sendMessage("Command: " + command + " not found, you can get help by typing " + App.PREFIX + "help").queue();
+        event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Command " + command + " not found, you can get help by typing: " + App.PREFIX + "help").build()).queue();
     }
 
     private void printProfile(GuildMessageReceivedEvent event, String name, String server) {
@@ -137,47 +137,47 @@ public class HandleLeagueRequest {
         switch (server) {
             case "br":
                 SERVER = "br1";
-                event.getChannel().sendMessage("Server set to Brazil. (br1)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to Brazil. (br1)").build()).queue();
                 break;
             case "eune":
                 SERVER = "eun1";
-                event.getChannel().sendMessage("Server set to EU Nordic and East. (eun1)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to EU Nordic and East. (eun1)").build()).queue();
                 break;
             case "euw":
                 SERVER = "euw1";
-                event.getChannel().sendMessage("Server set to EU West. (euw1)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to EU West. (euw1)").build()).queue();
                 break;
             case "jp":
                 SERVER = "jp1";
-                event.getChannel().sendMessage("Server set to Japan. (jp1)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to Japan. (jp1)").build()).queue();
                 break;
             case "kr":
                 SERVER = "kr";
-                event.getChannel().sendMessage("Server set to Korea. (kr)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to Korea. (kr)").build()).queue();
                 break;
             case "lan":
                 SERVER = "la1";
-                event.getChannel().sendMessage("Server set to Latin America North. (lan)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to Latin America North. (lan)").build()).queue();
                 break;
             case "las":
                 SERVER = "la2";
-                event.getChannel().sendMessage("Server set to Latin America South. (la2)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to Latin America South. (la2)").build()).queue();
                 break;
             case "na":
                 SERVER = "na1";
-                event.getChannel().sendMessage("Server set to North America. (na1)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to North America. (na1)").build()).queue();
                 break;
             case "oce":
                 SERVER = "oc1";
-                event.getChannel().sendMessage("Server set to Oceania. (oc1)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to Oceania. (oc1)").build()).queue();
                 break;
             case "ru":
                 SERVER = "ru";
-                event.getChannel().sendMessage("Server set to Russia. (ru)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Server set to Russia. (ru)").build()).queue();
                 break;
             case "tr":
                 SERVER = "tr1";
-                event.getChannel().sendMessage("Server set to Turkey. (tr1)").queue();
+                event.getChannel().sendMessage(new EmbedBuilder().setTitle("Server set to Turkey. (tr1)").build()).queue();
                 break;
             default:
                 EmbedBuilder embed = new EmbedBuilder();

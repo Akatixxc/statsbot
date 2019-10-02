@@ -3,8 +3,11 @@ package fi.kooditiimi.commandsvanha;
 import fi.kooditiimi.App;
 import fi.kooditiimi.faceit.HandleFaceitRequest;
 import fi.kooditiimi.league.HandleLeagueRequest;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.awt.*;
 
 public class Commands extends ListenerAdapter {
 
@@ -43,7 +46,7 @@ public class Commands extends ListenerAdapter {
     }
 
     private void printCommandNotFoundMessage(GuildMessageReceivedEvent event, String command) {
-        event.getChannel().sendMessage("Command: " + command + " not found, you can get help by typing " + App.PREFIX + "help").queue();
+        event.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Command " + command + " not found, you can get help by typing: " + App.PREFIX + "help").build()).queue();
     }
 
 
