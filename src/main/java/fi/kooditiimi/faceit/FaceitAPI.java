@@ -1,5 +1,6 @@
 package fi.kooditiimi.faceit;
 
+import fi.kooditiimi.KeyReader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +62,7 @@ public class FaceitAPI {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
-                    .headers("Authorization", "Bearer 5366277a-05ba-466e-9cb5-25565398feaf")
+                    .headers("Authorization", KeyReader.get_key("faceit"))
                     .build();
 
             return client.send(request, HttpResponse.BodyHandlers.ofString());

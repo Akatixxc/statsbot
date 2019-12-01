@@ -1,5 +1,6 @@
 package fi.kooditiimi.league;
 
+import fi.kooditiimi.KeyReader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -96,7 +97,7 @@ public class LeagueAPI {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
-                    .headers("X-Riot-Token", "RGAPI-b2253d85-974c-4f52-b802-0ab50a94b1b8")
+                    .headers("X-Riot-Token", KeyReader.get_key("league"))
                     .build();
 
             return client.send(request, HttpResponse.BodyHandlers.ofString());

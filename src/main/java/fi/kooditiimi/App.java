@@ -1,18 +1,20 @@
 package fi.kooditiimi;
 
 import fi.kooditiimi.commandsvanha.Commands;
+import fi.kooditiimi.KeyReader;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
 
 public class App {
 
     public static String PREFIX = ">";
 
-    public static void main(String[] args) throws LoginException {
+    public static void main(String[] args) {
         startApplication();
     }
 
@@ -21,13 +23,13 @@ public class App {
 
         try {
 
-            jda = new JDABuilder("NjE4MTIyODA5ODI2MjE0MDIx.XW1nDw.U-GtQFn5Jp6lfkm204fKQkX1p3g").build();
+            jda = new JDABuilder(KeyReader.get_key("discord")).build();
             jda.getPresence().setStatus(OnlineStatus.ONLINE);
             jda.getPresence().setActivity(Activity.watching("your stats"));
 
             jda.addEventListener(new Commands());
 
-        } catch(LoginException e) {
+        } catch(LoginException | IOException e) {
             System.err.println("Login exception, API key is wrong: " + e);
         }
 

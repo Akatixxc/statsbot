@@ -1,5 +1,6 @@
 package fi.kooditiimi.pubg;
 
+import fi.kooditiimi.KeyReader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,10 +71,7 @@ public class PubgAPI {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
-                    .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjNWY2ZDdlMC1" +
-                            "jM2ZiLTAxMzctZWY2NS0xZjM2NDJjMGE2YzAiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTY5NjYwOTg0L" +
-                            "CJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImFrYXRpeHhjLWdtYWlsIn0.w99ewmTQKsh" +
-                            "bOFpnCKf0vhZO12dXhID6z5yejyGhFgY")
+                    .header("Authorization", KeyReader.get_key("pubg"))
                     .header("Accept", "application/vnd.api+json")
                     .build();
 
