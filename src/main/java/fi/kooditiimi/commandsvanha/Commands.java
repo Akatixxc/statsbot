@@ -2,6 +2,7 @@ package fi.kooditiimi.commandsvanha;
 
 import fi.kooditiimi.App;
 import fi.kooditiimi.faceit.HandleFaceitRequest;
+import fi.kooditiimi.pubg.HandlePubgRequest;
 import fi.kooditiimi.league.HandleLeagueRequest;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -39,6 +40,10 @@ public class Commands extends ListenerAdapter {
             case "faceit":
                 HandleFaceitRequest faceitrequest = new HandleFaceitRequest();
                 faceitrequest.handleRequest(args, event);
+                break;
+            case "pubg":
+                HandlePubgRequest pubgrequest = new HandlePubgRequest();
+                pubgrequest.handleRequest(args, event);
                 break;
             default:
                 printCommandNotFoundMessage(event, firstArgument);
